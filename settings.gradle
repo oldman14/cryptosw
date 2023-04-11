@@ -1,0 +1,28 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://gitlab-new.bap.jp/api/v4/projects/3444/packages/maven"
+
+            credentials(HttpHeaderCredentials) {
+                name = "Private-Token"
+                value = gitLabCryptoSdkPrivateToken // the variable resides in $GRADLE_USER_HOME/gradle.properties
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
+}
+rootProject.name = "CryptoGW"
+include ':app'
+include ':cryptogw'

@@ -1,0 +1,41 @@
+apply plugin: 'maven-publish'
+
+ext {
+    gw_version_name = '0.1.88'
+    gw_version_code = 23
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            develop(MavenPublication) {
+                from components.developRelease
+                groupId 'jp.co.tokairika'
+                artifactId 'cryptogw-develop'
+                version = "$gw_version_name"
+            }
+            staging(MavenPublication) {
+                from components.stagingRelease
+                groupId 'jp.co.tokairika'
+                artifactId 'cryptogw-staging'
+                version = "$gw_version_name"
+            }
+        }
+        repositories {
+            maven {
+                url "https://gitlab-new.bap.jp/api/v4/projects/3497/packages/maven"
+
+                credentials(HttpHeaderCredentials) {
+                    name = "Private-Token"
+                    value = gitLabCryptoGWPrivateToken
+                    // the variable resides in $GRADLE_USER_HOME/gradle.properties
+                }
+                authentication {
+                    header(HttpHeaderAuthentication)
+                }
+            }
+        }
+    }
+}
+
+
